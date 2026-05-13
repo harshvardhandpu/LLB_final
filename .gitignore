@@ -1,0 +1,38 @@
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.ai-venv/
+
+# AI/ML caches
+.huggingface-cache/
+.cache/
+models/
+
+# Logs
+*.log
+
+# Env
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+target/
+
+# MongoDB
+.mongodb-data/
+data/db/
+
+# OS
+.DS_Store
+Thumbs.db

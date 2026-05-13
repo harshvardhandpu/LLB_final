@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document Analyzer - Indian Contracts</title>
+    <meta name="description" content="Analyze Indian legal contracts with AI-powered summaries, clause detection, risk flags, and plain-English explanations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <div class="ambient ambient-left" aria-hidden="true"></div>
+        <div class="ambient ambient-right" aria-hidden="true"></div>
+
+        <div class="container">
+            <header class="hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Indian Contract Intelligence</p>
+                    <h1>Review complex legal documents with a sharper, modern lens.</h1>
+                    <p class="subtitle">Welcome, <strong>{{ user.username }}</strong>! Upload a contract and get structured insights, clause mapping, plain-English summaries, and risk flags designed for faster decision-making.</p>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#uploadSection">Start Analysis</a>
+                        <a class="btn btn-secondary" href="{{ url_for('logout') }}" style="margin-left: 10px;">Logout</a>
+                        <div class="hero-trust">
+                            <span class="trust-dot"></span>
+                            Built for contracts, agreements, and vendor paperwork
+                        </div>
+                    </div>
+
+                    <div class="hero-highlights">
+                        <div class="highlight-card">
+                            <span class="highlight-label">Focus</span>
+                            <strong>Summary + clause review</strong>
+                        </div>
+                        <div class="highlight-card">
+                            <span class="highlight-label">Output</span>
+                            <strong>Plain English guidance</strong>
+                        </div>
+                        <div class="highlight-card">
+                            <span class="highlight-label">Context</span>
+                            <strong>Indian legal workflows</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="hero-panel" aria-label="Product overview">
+                    <div class="panel-badge">Analysis Console</div>
+                    <div class="hero-panel-card hero-panel-primary">
+                        <p class="panel-kicker">What you get</p>
+                        <ul class="panel-list">
+                            <li>Risk severity breakdown</li>
+                            <li>Key clause extraction</li>
+                            <li>Entity and obligation spotting</li>
+                            <li>Readable contract explanation</li>
+                        </ul>
+                    </div>
+                    <div class="hero-panel-grid">
+                        <div class="hero-metric">
+                            <span class="metric-value">50MB</span>
+                            <span class="metric-label">PDF or DOCX support</span>
+                        </div>
+                        <div class="hero-metric">
+                            <span class="metric-value">TL;DR</span>
+                            <span class="metric-label">Fast first-pass summary</span>
+                        </div>
+                    </div>
+                </aside>
+            </header>
+
+            <main class="main-content">
+                <section class="process-strip" aria-label="How it works">
+                    <div class="process-step">
+                        <span class="step-index">01</span>
+                        <div>
+                            <h2>Upload</h2>
+                            <p>Drop a contract, lease, employment agreement, or vendor document.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <span class="step-index">02</span>
+                        <div>
+                            <h2>Analyze</h2>
+                            <p>The app extracts clauses, entities, obligations, and risky language.</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <span class="step-index">03</span>
+                        <div>
+                            <h2>Review</h2>
+                            <p>Use the summary and flagged issues as a faster review starting point.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="upload-section" id="uploadSection">
+                    <div class="upload-container">
+                        <div class="upload-box" id="uploadBox" role="button" tabindex="0" aria-label="Upload a legal document">
+                            <div class="upload-box-glow" aria-hidden="true"></div>
+                            <div class="upload-box-content">
+                                <div class="upload-icon">✦</div>
+                                <p class="section-kicker">Secure review workspace</p>
+                                <h2>Upload your document for AI-assisted legal analysis</h2>
+                                <p class="upload-description">Drag and drop your legal document or click anywhere in this panel to select a file for analysis.</p>
+
+                                <div class="upload-meta">
+                                    <span class="meta-chip">PDF / DOCX</span>
+                                    <span class="meta-chip">Up to 50MB</span>
+                                    <span class="meta-chip">Summary + risk review</span>
+                                </div>
+
+                                <input type="file" id="fileInput" accept=".pdf,.docx" hidden>
+                                <button class="btn btn-primary" id="selectFileBtn">Choose Document</button>
+
+                                <div class="selected-file hidden" id="selectedFile" aria-live="polite">
+                                    <span class="selected-file-label">Selected file</span>
+                                    <strong id="selectedFileName">No file selected</strong>
+                                </div>
+
+                                <p class="upload-note">Works especially well for rental agreements, employment contracts, NDAs, vendor terms, and other formal legal documents.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="loadingSection" class="loading-section hidden" role="status" aria-live="polite">
+                    <div class="loading-orb">
+                        <div class="spinner"></div>
+                    </div>
+                    <p>Analyzing your document...</p>
+                    <p class="loading-subtext">Extracting entities, classifying clauses, and reviewing risk patterns in the uploaded contract.</p>
+                </section>
+
+                <section id="resultsSection" class="results-section hidden">
+                    <div class="results-topbar">
+                        <p class="section-kicker">Analysis report</p>
+                        <h2>Your legal review dashboard</h2>
+                        <p>Use this as a structured first pass before taking formal legal action or obtaining professional advice.</p>
+                    </div>
+
+                    <div class="card overview-card">
+                        <h2>Contract Snapshot</h2>
+                        <div id="overviewContent" class="overview-grid"></div>
+                    </div>
+
+                    <div class="card guide-card">
+                        <h2>Plain Language Guide</h2>
+                        <div id="plainLanguageGuide" class="guide-grid"></div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <h2>Document Summary</h2>
+                        <div id="summaryContent" class="summary-content"></div>
+                    </div>
+
+                    <div class="card info-card">
+                        <h2>Key Information</h2>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>Document Size</strong>
+                                <span id="docSize"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Analysis Time</strong>
+                                <span id="analysisTime"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>File Name</strong>
+                                <span id="fileName"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card entities-card">
+                        <h2>Extracted Information</h2>
+                        <div id="entitiesContent" class="entities-content"></div>
+                    </div>
+
+                    <div class="card risks-card" id="risksCard">
+                        <h2>Identified Risks</h2>
+                        <div id="risksContent" class="risks-content"></div>
+                    </div>
+
+                    <div class="card clauses-card">
+                        <h2>Key Clauses Detected</h2>
+                        <div id="clausesContent" class="clauses-content"></div>
+                    </div>
+
+                    <div class="card proscons-card">
+                        <div class="proscons-grid">
+                            <div class="proscons-item pros">
+                                <h3>Advantages</h3>
+                                <ul id="prosList"></ul>
+                            </div>
+                            <div class="proscons-item cons">
+                                <h3>Disadvantages</h3>
+                                <ul id="consList"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card obligations-card">
+                        <h2>Key Obligations</h2>
+                        <div id="obligationsContent" class="obligations-content"></div>
+                    </div>
+
+                    <div class="card simplified-card">
+                        <h2>Simplified Version</h2>
+                        <div id="simplifiedContent" class="simplified-content"></div>
+                    </div>
+
+                    <div class="card checklist-card">
+                        <h2>Questions To Ask Before Signing</h2>
+                        <ul id="questionsContent" class="checklist-list"></ul>
+                    </div>
+
+                    <div class="card glossary-card">
+                        <h2>Legal Terms Made Simple</h2>
+                        <div id="glossaryContent" class="glossary-content"></div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="downloadBtn">Download Report</button>
+                        <button class="btn btn-secondary" id="newFileBtn">Analyze Another</button>
+                    </div>
+                </section>
+
+                <section id="errorSection" class="error-section hidden" role="alert">
+                    <div class="error-message">
+                        <p class="section-kicker">Something went wrong</p>
+                        <h2>We could not analyze that document</h2>
+                        <p id="errorContent"></p>
+                        <button class="btn btn-secondary" id="retryBtn">Try Again</button>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2024 Legal Document Analyzer. For information extraction and analysis only.</p>
+                <p><strong>Note:</strong> This tool supports review workflows and should not replace advice from a qualified legal professional.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

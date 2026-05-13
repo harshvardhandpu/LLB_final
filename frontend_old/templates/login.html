@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Legal Document Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .auth-form input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--surface-light);
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        .flash-messages {
+            margin-top: 15px;
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .flash-messages.success {
+            color: #2e7d32;
+            background: #e8f5e9;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <div class="ambient ambient-left" aria-hidden="true"></div>
+        <div class="ambient ambient-right" aria-hidden="true"></div>
+
+        <div class="container auth-container">
+            <header class="hero" style="margin-bottom: 2rem;">
+                <div class="hero-copy" style="text-align: center;">
+                    <h1>Welcome Back</h1>
+                    <p class="subtitle">Log in to continue your legal analysis</p>
+                </div>
+            </header>
+
+            <div class="card" style="padding: 30px;">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="flash-messages {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="remember" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Log In</button>
+                </form>
+                <div style="margin-top: 20px;">
+                    Don't have an account? <a href="{{ url_for('register') }}" style="color: var(--primary); text-decoration: none;">Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
